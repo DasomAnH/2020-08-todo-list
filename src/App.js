@@ -9,11 +9,10 @@ class App extends Component {
     this.state = {
       newTodoText: '',
       todos: [
-        'Description',
-        'Another Todo',
-        'Another another Todo',
-        'A third really long todo with a name that is too long to fit on one line and has a reallybigwordincludedalso'
-      ]
+        { text: 'Another Todo', complete: false },
+        { text: 'Another another Todo', complete: false },
+        { text: 'A third really long todo name', complete: false }
+      ],
     }
   }
 
@@ -23,17 +22,24 @@ class App extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    // alert(`new todo: ${this.state.newTodoText}`);
-    // // option 1: spread and push new item
-    // let newTodos = [...this.state.todos];
-    // newTodos.push(this.state.newTodoText);
-    // this.setState({
-    //   todos: newTodos
-    // })
+
+    // option 1: spread and push new item
+    let newTodos = [...this.state.todos];
+    let newItem = {
+      text: this.state.newTodoText,
+      complete: false
+    }
+    newTodos.push(newItem);
+    this.setState({
+      todos: newTodos
+    })
 
     // option 2: concat
     this.setState({
-      todos: this.state.todos.concat(this.state.newTodoText),
+      todos: this.state.todos.concat({
+        text: this.state.newTodoText,
+        complete: false
+      }),
       newTodoText: ''
     })
   }
@@ -56,7 +62,31 @@ class App extends Component {
     })
   }
 
+  handleToggleComplete = (indexOfItemToToggle) => {
+    // create a copy of the todo we want to toggle
+    let newTodoItem = {...this.state.todos[indexOfItemToToggle]};
+    // toggle the complete status (use opposite of current value)
+    newTodoItem.complete = !newTodoItem.complete
+    // create a copy of the todos from state
+    let newTodos = [...this.state.todos];
+    // insert newTodo in place of old todo
+    newTodos.splice(indexOfItemToToggle, 1, newTodoItem);
+    // set state with new array of todos including new modified todo item
+    this.setState({
+      todos: newTodos
+    })
+  }
+
   render() {
+    let incomplete = [];
+    let complete = [];
+    this.state.todos.forEach((todo) => {
+      if (todo.complete) {
+        complete.push(todo)
+      } else {
+        incomplete.push(todo);
+      }
+    })
     return (
       <div className="App">
         <h1>Add Task</h1>
@@ -67,8 +97,8 @@ class App extends Component {
           </label>
           <button type="submit">Add Item</button>
         </form>
-        <TaskList title="My Tasks" todos={this.state.todos} delete={this.handleDelete} />
-        <TaskList title="Complete Tasks" todos={this.state.todos} delete={this.handleDelete} />
+        <TaskList title="My Tasks" todos={incomplete} delete={this.handleDelete} toggle={this.handleToggleComplete} />
+        <TaskList title="Complete Tasks" todos={complete} delete={this.handleDelete} toggle={this.handleToggleComplete} />
       </div>
     );
   }

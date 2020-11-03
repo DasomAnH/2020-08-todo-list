@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Todo from './Todo'
 
 export default class TaskList extends Component {
   render() {
@@ -7,8 +8,7 @@ export default class TaskList extends Component {
         <h2>{this.props.title}</h2>
         <ul>
           { this.props.todos.map((todo, index) => {
-            // return <li key={index}>{todo} <button onClick={this.handleDelete.bind(this, index)}>🗑</button></li>
-            return <li key={index}>{todo} <button onClick={() => {this.props.delete(index)}}>🗑</button></li>
+            return <Todo key={index} todo={todo} index={index} toggle={this.props.toggle} delete={this.props.delete} />
           })}
         </ul>
       </div>
