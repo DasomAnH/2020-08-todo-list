@@ -23,16 +23,16 @@ class App extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
-    // option 1: spread and push new item
-    let newTodos = [...this.state.todos];
-    let newItem = {
-      text: this.state.newTodoText,
-      complete: false
-    }
-    newTodos.push(newItem);
-    this.setState({
-      todos: newTodos
-    })
+    // // option 1: spread and push new item
+    // let newTodos = [...this.state.todos];
+    // let newItem = {
+    //   text: this.state.newTodoText,
+    //   complete: false
+    // }
+    // newTodos.push(newItem);
+    // this.setState({
+    //   todos: newTodos
+    // })
 
     // option 2: concat
     this.setState({
